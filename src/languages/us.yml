@@ -1,0 +1,61 @@
+command:
+  ban:
+    kick: 'Dir wurden gerade die Handfesseln angelegt von %by% wegen %message%.'
+    message: 'Du hast %name% gerade die Handfesseln angelegt mit der Begründung %message%.'
+    wrongformat: ''
+    needreason: ''
+  ipban:
+    kick: 'Deine Adresse wurde gerade von %by% in Fussketten gelegt wegen %message%.'
+    message: 'Allen Spielern mit der Adresse %address% wurden die Fussketten angelegt wegen %message%.'
+    wrongformat: ''
+    needreason: ''
+  ipmute:
+    muted: '%by% hat deine Adresse gefunden und hat dir geschickt deinen Mund verschlossen mit einem Knebel wegen %message%.'
+    message: 'Du hast der Adresse %address% einen Knebel in den Mund gesteckt wegen %message%.'
+    wrongformat: ''
+    needreason: ''
+  iptempban:
+    kick: 'Deiner Adresse wurden von %by% bis %date% um %time% die Fussketten angelegt wegen %message%.'
+    message: ''
+    wrongformat: ''
+    needreason: ''
+    needtime: ''
+  iptempmute:
+    muted: ''
+    message: ''
+    wrongformat: ''
+    needreason: ''
+    needtime: ''
+  mute:
+    kick: 'Oh Oh %by% kam von hinten angeschlichen und steckte dir einen Knebel in den Mund wegen %message%.'
+    message: ''
+    wrongformat: ''
+    needreason: ''
+  tempban:
+    kick: ''
+    message: ''
+    wrongformat: ''
+    needreason: ''
+    needtime: ''
+  tempmute:
+    muted: ''
+    message: ''
+    wrongformat: ''
+    needreason: ''
+    needtime: ''
+  unban:
+    wrongformat: ''
+    unknown: ''
+    successful: ''
+    error: ''
+  unmute:
+    wrongformat: ''
+    unknown: ''
+    successful: ''
+    error: ''
+function:
+  temp-mute: ''
+  mute: ''
+  temp-ban: ''
+  ban: ''
+objection: ' - Falls du Einspruch dagegen erheben möchtest, wende dich per Ticket bitte an den Support.'
