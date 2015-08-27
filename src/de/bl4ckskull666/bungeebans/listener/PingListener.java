@@ -46,6 +46,10 @@ public class PingListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onProxyPing(ProxyPingEvent e) {
         PlayerBan pb = BungeeBans.getIpBanned(e.getConnection().getAddress().getAddress().getHostAddress());
+        if(e.getConnection().getUniqueId() != null)
+            BungeeBans.getPlugin().getLogger().log(Level.INFO, "UUID in ProxyPing is not null");
+        if(e.getConnection().getName() != null)
+            BungeeBans.getPlugin().getLogger().log(Level.INFO, "Name in ProxyPing is not null");
         
         if(pb == null)
             return;

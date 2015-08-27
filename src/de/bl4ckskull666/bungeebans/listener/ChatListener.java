@@ -50,7 +50,8 @@ public class ChatListener implements Listener {
         if(pb.isTemporary())
            sender.sendMessage(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "function.temp-muted", "You're muted because %message% until %date% on %time%.", new String[] {"%message%", "%date%", "%time%"}, new String[] {pb.getMessage(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())}) + Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "objection", "")));
         else
-           sender.sendMessage(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "function.muted", "You're muted because %message%.", new String[] {"%message%"}, new String[] {pb.getMessage()}) + Language.getMessage(BungeeBans.getPlugin(), sender.getUniqueId(), "objection", "")));
+           sender.sendMessage(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "function.muted", "You're muted because %message%.", new String[] {"%message%"}, new String[] {pb.getMessage()}) + Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "objection", "")));
+        e.setMessage("");
         e.setCancelled(true);
     }
 }
