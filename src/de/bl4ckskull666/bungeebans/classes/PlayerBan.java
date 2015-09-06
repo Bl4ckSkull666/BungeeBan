@@ -5,8 +5,6 @@
  */
 package de.bl4ckskull666.bungeebans.classes;
 
-import de.bl4ckskull666.bungeebans.BungeeBans;
-import de.bl4ckskull666.bungeebans.database.MySQL;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -23,15 +21,7 @@ public final class PlayerBan {
     private final Calendar _calEnd = Calendar.getInstance();;
     
     public PlayerBan(String uuid, String lastName, String banMsg, Long t, String ty) {
-        if(uuid.equalsIgnoreCase(lastName) && BungeeBans.getPlugin().getConfig().getBoolean("use-uuiddatabase-table", false)) {
-            uuid = MySQL.getUUIDFromName(lastName);
-            if(uuid.isEmpty())
-               _uuid = lastName;
-            else
-                _uuid = uuid;
-        } else {
-            _uuid = uuid;
-        }
+         _uuid = uuid;
         _lastName = lastName;
         _banMessage = banMsg;
         _type = ty;
@@ -51,15 +41,7 @@ public final class PlayerBan {
     }
     
     public PlayerBan(String uuid, String lastName, String banMsg, Calendar begin, Calendar ending, String ty) {
-        if(uuid.equalsIgnoreCase(lastName) && BungeeBans.getPlugin().getConfig().getBoolean("use-uuiddatabase-table", false)) {
-            uuid = MySQL.getUUIDFromName(lastName);
-            if(uuid.isEmpty())
-               _uuid = lastName;
-            else
-                _uuid = uuid;
-        } else {
-            _uuid = uuid;
-        }
+        _uuid = uuid;
         _lastName = lastName;
         _banMessage = banMsg;
         _type = ty;

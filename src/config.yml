@@ -9,3 +9,7 @@ database:
     row-uuid: 'uuid'
     row-name: 'name'
     table: 'uuiddatabase'
+forbidden-commands-on-mute:
+- w
+- m
+- msg

@@ -56,7 +56,7 @@ public class BungeeBans extends Plugin {
         }
         
         MySQL.loadBans();
-        if(_config.getBoolean("database.uuid.use", false)) {
+        if(_config.getString("database.uuid.use", "yml").equalsIgnoreCase("mysql")) {
             MySQL.readUUIDs();
         } else {
             _uuids = Mu1ti1ingu41.loadCustomFile(this, "uuid.yml");
@@ -90,7 +90,7 @@ public class BungeeBans extends Plugin {
     
     @Override
     public void onDisable() {
-        if(_config.getBoolean("database.uuid.use", false)) {
+        if(_config.getString("database.uuid.use", "yml").equalsIgnoreCase("mysql")) {
             MySQL.writeUUIDs();
         } else {
             for(Map.Entry<UUID, String> me: _uuiddb.entrySet())

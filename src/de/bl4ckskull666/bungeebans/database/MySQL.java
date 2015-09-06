@@ -181,26 +181,6 @@ public final class MySQL {
         return false;
     }
     
-    public static String getUUIDFromName(String name) {
-        Connection con;
-        String uuid = "";
-        try {
-            con = getConnect();
-            PreparedStatement statement;
-            statement = con.prepareStatement("SELECT `uuid` FROM `uuiddatabase` WHERE `name` = ? LIMIT 0,1");
-            statement.setString(1, name);
-            ResultSet rs = statement.executeQuery();
-            if(rs.next() && !rs.getString("uuid").isEmpty() && rs.getString("uuid").length() > 32)
-                uuid = rs.getString("uuid");
-            rs.close();
-            statement.close();
-            con.close();
-        } catch(SQLException e) {
-            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
-        }
-        return uuid;
-    }
-    
     private static String getDateTime(Calendar cal) {
         String temp = String.valueOf(cal.get(Calendar.YEAR));
         temp += "-" + (cal.get(Calendar.MONTH) <= 8?"0":"") + String.valueOf(cal.get(Calendar.MONTH)+1);
