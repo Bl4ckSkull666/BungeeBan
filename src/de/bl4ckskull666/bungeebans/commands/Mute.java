@@ -42,6 +42,10 @@ public class Mute extends Command {
             pp = ProxyServer.getInstance().getPlayer(a[0]);
             name = pp.getUniqueId().toString();
             nick = pp.getName();
+        } else {
+            UUID u = BungeeBans.getUUIDByName(a[0]);
+            if(u != null)
+                name = u.toString();
         }
         
         String msg = "";

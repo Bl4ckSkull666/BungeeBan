@@ -4,4 +4,8 @@ database:
   user: root
   pass: root
   data: bungeecord
-use-uuiddatabase-table: true
+  uuid:
+    use: mysql
+    row-uuid: 'uuid'
+    row-name: 'name'
+    table: 'uuiddatabase'

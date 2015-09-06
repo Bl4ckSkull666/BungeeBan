@@ -13,8 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
-import net.md_5.bungee.api.ProxyServer;
 
 /**
  *
@@ -28,7 +29,7 @@ public final class MySQL {
             Class.forName("com.mysql.jdbc.Driver");
             return true;
         } catch(ClassNotFoundException t) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Konnte den MySQL Treiber nicht finden! Beende Plugin.", t);
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Konnte den MySQL Treiber nicht finden! Beende Plugin.", t);
             return false;
         }
     }
@@ -43,7 +44,7 @@ public final class MySQL {
                     BungeeBans.getPlugin().getConfig().getString("database.pass", "root")
             );
         } catch(SQLException e) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
         }
         return con;
     }
@@ -82,7 +83,7 @@ public final class MySQL {
             statement.execute();
             statement.close();
         } catch(SQLException e) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Fehler beim Erstellen der Datenbank Struktur!", e);
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Erstellen der Datenbank Struktur!", e);
             return false;
         }
         return true;
@@ -100,7 +101,7 @@ public final class MySQL {
             con.close();
             return true;
         } catch(SQLException e) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
         }
         return false;
     }
@@ -124,7 +125,7 @@ public final class MySQL {
                 _lastLoadedId = rs.getInt("id");
             }            
         } catch(SQLException e) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
         }
     }
     
@@ -157,7 +158,7 @@ public final class MySQL {
             con.close();
             return true;
         } catch(SQLException e) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
         }
         return false;
     }
@@ -175,7 +176,7 @@ public final class MySQL {
             con.close();
             return true;
         } catch(SQLException e) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
         }
         return false;
     }
@@ -195,7 +196,7 @@ public final class MySQL {
             statement.close();
             con.close();
         } catch(SQLException e) {
-            ProxyServer.getInstance().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
         }
         return uuid;
     }
@@ -221,5 +222,55 @@ public final class MySQL {
             cal.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]), Integer.parseInt(time[0]), Integer.parseInt(time[1]), Integer.parseInt(time[2]));
         }
         return cal;
+    }
+    
+    private static String checkUUIDString(String uuid) {
+        if(uuid.isEmpty() || uuid.length() <= 16)
+            return "00000000-0000-0000-0000-000000000000";
+        else if(uuid.length() == 32)
+            return uuid.replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
+        else
+            return uuid;
+            
+    }
+    
+    public static void readUUIDs() {
+        Connection con;
+        try {
+            con = getConnect();
+            PreparedStatement statement;
+            statement = con.prepareStatement("SELECT `" + BungeeBans.getPlugin().getConfig().getString("database.uuid.row-uuid", "uuid") + "`,`" + BungeeBans.getPlugin().getConfig().getString("database.uuid.row-name", "name") + "` FROM `" + BungeeBans.getPlugin().getConfig().getString("database.uuid.table", "player-uuids") + "`");
+            ResultSet rs = statement.executeQuery();
+            while(rs.next())
+                BungeeBans.getUUIDDatabase().put(UUID.fromString(checkUUIDString(rs.getString(BungeeBans.getPlugin().getConfig().getString("database.uuid.row-uuid", "uuid")))), BungeeBans.getPlugin().getConfig().getString("database.uuid.row-name", "name"));
+            rs.close();
+            statement.close();
+            con.close();
+        } catch(SQLException e) {
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
+        } finally {
+            BungeeBans.getPlugin().getLogger().log(Level.INFO, "Loaded {0} entrys from the Database.", BungeeBans.getUUIDDatabase().size());
+        }
+    }
+    
+    public static void writeUUIDs() {
+        Connection con;
+        try {
+            con = getConnect();
+            PreparedStatement statement;
+            statement = con.prepareStatement("INSERT INTO `" + BungeeBans.getPlugin().getConfig().getString("database.uuid.table", "player-uuids") + "` (`" + BungeeBans.getPlugin().getConfig().getString("database.uuid.row-uuid", "uuid") + "`,`" + BungeeBans.getPlugin().getConfig().getString("database.uuid.row-name", "name") + "`) VALUES (?,?) ON DUPLICATE KEY UPDATE " + BungeeBans.getPlugin().getConfig().getString("database.uuid.row-name", "name") + "=?");
+            for(Map.Entry<UUID, String> me: BungeeBans.getUUIDDatabase().entrySet()) {
+                statement.setString(1, me.getKey().toString());
+                statement.setString(2, me.getValue());
+                statement.setString(3, me.getValue());
+                statement.execute();
+            }
+            statement.close();
+            con.close();
+        } catch(SQLException e) {
+            BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
+        } finally {
+            BungeeBans.getPlugin().getLogger().log(Level.INFO, "Saved/Updated all {0} entrys to the Database.", BungeeBans.getUUIDDatabase().size());
+        }
     }
 }

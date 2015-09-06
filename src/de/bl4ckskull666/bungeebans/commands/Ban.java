@@ -41,6 +41,10 @@ public class Ban extends Command {
             pp = ProxyServer.getInstance().getPlayer(a[0]);
             name = pp.getUniqueId().toString();
             nick = pp.getName();
+        } else {
+            UUID u = BungeeBans.getUUIDByName(a[0]);
+            if(u != null)
+                name = u.toString();
         }
         
         String msg = "";
@@ -53,7 +57,7 @@ public class Ban extends Command {
         }
         
         PlayerBan pb = new PlayerBan(name, nick, msg, 0L, "ban");
-        MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
+        MySQL.addBan(pb, uuid_by_sender.toString());
         
         if(pp != null)
             pp.disconnect(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "command.ban.kick", "You have been just the handcuffs applied by %by% because %message%", new String[] {"%message%", "%by%"}, new String[] {msg, s.getName()}) + Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")));

@@ -5,7 +5,6 @@
  */
 package de.bl4ckskull666.bungeebans;
 
-import com.google.common.collect.ObjectArrays;
 import de.bl4ckskull666.bungeebans.classes.PlayerBan;
 import de.bl4ckskull666.bungeebans.commands.Ban;
 import de.bl4ckskull666.bungeebans.commands.IpBan;
@@ -24,7 +23,9 @@ import de.bl4ckskull666.bungeebans.listener.PingListener;
 import de.bl4ckskull666.mu1ti1ingu41.Mu1ti1ingu41;
 import de.bl4ckskull666.mu1ti1ingu41.Language;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.Connection;
@@ -38,6 +39,8 @@ import yamlapi.file.FileConfiguration;
  */
 public class BungeeBans extends Plugin {
     private FileConfiguration _config;
+    private FileConfiguration _uuids;
+    
     @Override
     public void onEnable() {
         if(!getDataFolder().exists()) {
@@ -53,6 +56,13 @@ public class BungeeBans extends Plugin {
         }
         
         MySQL.loadBans();
+        if(_config.getBoolean("database.uuid.use", false)) {
+            MySQL.readUUIDs();
+        } else {
+            _uuids = Mu1ti1ingu41.loadCustomFile(this, "uuid.yml");
+            for(String key: _uuids.getKeys(false))
+                _uuiddb.put(UUID.fromString(key), _uuids.getString(key));
+        }
         
         //Register Commands - Bans
         ProxyServer.getInstance().getPluginManager().registerCommand(this, new Ban());
@@ -80,6 +90,13 @@ public class BungeeBans extends Plugin {
     
     @Override
     public void onDisable() {
+        if(_config.getBoolean("database.uuid.use", false)) {
+            MySQL.writeUUIDs();
+        } else {
+            for(Map.Entry<UUID, String> me: _uuiddb.entrySet())
+                _uuids.set(me.getKey().toString(), me.getValue());
+            Mu1ti1ingu41.saveCustomFile(_uuids, this);
+        }
         Tasks.stopTasks();
     }
     
@@ -247,5 +264,20 @@ public class BungeeBans extends Plugin {
                 return Long.parseLong(number);
         }
         return -1;
+    }
+    
+    private final static HashMap<UUID, String> _uuiddb = new HashMap<>();
+    public static HashMap<UUID, String> getUUIDDatabase() {
+        return _uuiddb;
+    }
+    
+    public static UUID getUUIDByName(String name) {
+        if(_uuiddb.containsValue(name)) {
+            for(Map.Entry<UUID, String> me: _uuiddb.entrySet()) {
+                if(me.getValue().equalsIgnoreCase(name))
+                    return me.getKey();
+            }
+        }
+        return null;
     }
 }
