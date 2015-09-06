@@ -221,8 +221,18 @@ public final class MySQL {
             PreparedStatement statement;
             statement = con.prepareStatement("SELECT `" + BungeeBans.getPlugin().getConfig().getString("database.uuid.row-uuid", "uuid") + "`,`" + BungeeBans.getPlugin().getConfig().getString("database.uuid.row-name", "name") + "` FROM `" + BungeeBans.getPlugin().getConfig().getString("database.uuid.table", "player-uuids") + "`");
             ResultSet rs = statement.executeQuery();
-            while(rs.next())
-                BungeeBans.getUUIDDatabase().put(UUID.fromString(checkUUIDString(rs.getString(BungeeBans.getPlugin().getConfig().getString("database.uuid.row-uuid", "uuid")))), BungeeBans.getPlugin().getConfig().getString("database.uuid.row-name", "name"));
+            while(rs.next()) {
+                BungeeBans.getUUIDDatabase().put(
+                        UUID.fromString(
+                                checkUUIDString(
+                                        rs.getString(
+                                                BungeeBans.getPlugin().getConfig().getString("database.uuid.row-uuid", "uuid")
+                                        )
+                                )
+                        ),
+                        rs.getString(BungeeBans.getPlugin().getConfig().getString("database.uuid.row-name", "name"))
+                );
+            }
             rs.close();
             statement.close();
             con.close();

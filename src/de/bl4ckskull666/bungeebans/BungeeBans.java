@@ -272,11 +272,9 @@ public class BungeeBans extends Plugin {
     }
     
     public static UUID getUUIDByName(String name) {
-        if(_uuiddb.containsValue(name)) {
-            for(Map.Entry<UUID, String> me: _uuiddb.entrySet()) {
-                if(me.getValue().equalsIgnoreCase(name))
-                    return me.getKey();
-            }
+        for(Map.Entry<UUID, String> me: _uuiddb.entrySet()) {
+            if(me.getValue().toLowerCase().equals(name.toLowerCase()))
+                return me.getKey();
         }
         return null;
     }

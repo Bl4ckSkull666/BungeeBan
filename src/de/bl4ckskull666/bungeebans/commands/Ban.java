@@ -37,14 +37,15 @@ public class Ban extends Command {
         String name = a[0];
         String nick = a[0];
         ProxiedPlayer pp = null;
-        if(ProxyServer.getInstance().getPlayer(a[0]) != null) {
-            pp = ProxyServer.getInstance().getPlayer(a[0]);
+        if(ProxyServer.getInstance().getPlayer(nick) != null) {
+            pp = ProxyServer.getInstance().getPlayer(nick);
             name = pp.getUniqueId().toString();
             nick = pp.getName();
         } else {
-            UUID u = BungeeBans.getUUIDByName(a[0]);
-            if(u != null)
+            UUID u = BungeeBans.getUUIDByName(nick);
+            if(u != null) {
                 name = u.toString();
+            }
         }
         
         String msg = "";
