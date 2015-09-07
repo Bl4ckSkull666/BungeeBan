@@ -7,8 +7,10 @@ package de.bl4ckskull666.bungeebans;
 
 import de.bl4ckskull666.bungeebans.classes.PlayerBan;
 import de.bl4ckskull666.bungeebans.database.MySQL;
+import de.bl4ckskull666.mu1ti1ingu41.Language;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import net.md_5.bungee.api.ProxyServer;
@@ -94,6 +96,8 @@ public final class Tasks {
                     PlayerBan.getMutes().remove(_unmuteStr);
                     BungeeBans.getPlugin().getLogger().log(Level.INFO, "{0} was unmuted.", _unmuteStr);
                     BungeeBans.TeamInform("function.auto-unmute", "%name%'s mute time has end.", new String[] {"%name%"}, new String[] {name});
+                    if(ProxyServer.getInstance().getPlayer(_unmute.getUUID()) != null)
+                        ProxyServer.getInstance().getPlayer(_unmute.getUUID()).sendMessage(Language.getMessage(BungeeBans.getPlugin(), UUID.fromString(_unmute.getUUID()), "function.auto-unmute-me", "Your mute time has end. You can now talk again."));
                 }
             }
 

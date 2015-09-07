@@ -12,6 +12,7 @@ import de.bl4ckskull666.bungeebans.database.MySQL;
 import de.bl4ckskull666.mu1ti1ingu41.Language;
 import java.util.UUID;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Command;
 
 /**
@@ -44,6 +45,8 @@ public class UnMute extends Command {
         String unmutedName = pb.getName();
         if(MySQL.delBan(pb)) {
             if(PlayerBan.getMutes().remove(pb.getUUID(), pb)) {
+                if(ProxyServer.getInstance().getPlayer(pb.getUUID()) != null)
+                    ProxyServer.getInstance().getPlayer(pb.getUUID()).sendMessage(Language.getMessage(BungeeBans.getPlugin(), UUID.fromString(pb.getUUID()), "function.unmute-me", "You can now talk again. Please respect the server rules."));
                 BungeeBans.TeamInform("command.unmute.successful", "%by% has unuted %name%.", new String[] {"%name%", "%by%"}, new String[] {unmutedName, s.getName()});        
                 Tasks.restartMuteTask();
                 return;

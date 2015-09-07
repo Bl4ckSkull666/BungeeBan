@@ -20,7 +20,7 @@ import net.md_5.bungee.event.EventPriority;
  * @author PapaHarni
  */
 public class ChatListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChatEvent(ChatEvent e) {
         ProxiedPlayer sender = BungeeBans.getPlayer(e.getSender());
         if(sender == null)
