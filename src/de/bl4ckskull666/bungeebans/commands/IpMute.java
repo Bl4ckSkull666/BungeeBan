@@ -43,6 +43,11 @@ public class IpMute extends Command {
             return;
         }
         
+        if(PlayerBan.isMuted(ip)) {
+            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ipmute.is-muted", "IP %ip% is already muted.", new String[] {"%ip%"}, new String[] {ip}));
+            return;
+        }
+        
         PlayerBan pb = new PlayerBan(BungeeBans.getTheIP(ip, true), BungeeBans.getTheIP(ip, true), msg, 0L, "mute");
         MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
         

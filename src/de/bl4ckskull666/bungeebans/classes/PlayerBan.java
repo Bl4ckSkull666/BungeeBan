@@ -7,6 +7,7 @@ package de.bl4ckskull666.bungeebans.classes;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -109,5 +110,21 @@ public final class PlayerBan {
         if(!_mutes.containsKey(uuid))
             return null;
         return _mutes.get(uuid);
+    }
+    
+    public static boolean isBanned(String str) {
+        for(Map.Entry<String, PlayerBan> me: _bans.entrySet()) {
+            if(me.getValue().getUUID().equalsIgnoreCase(str) || me.getValue().getName().equalsIgnoreCase(str))
+                return true;
+        }
+        return false;
+    }
+    
+    public static boolean isMuted(String str) {
+        for(Map.Entry<String, PlayerBan> me: _mutes.entrySet()) {
+            if(me.getValue().getUUID().equalsIgnoreCase(str) || me.getValue().getName().equalsIgnoreCase(str))
+                return true;
+        }
+        return false;
     }
 }

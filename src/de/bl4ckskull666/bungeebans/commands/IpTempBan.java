@@ -54,6 +54,11 @@ public class IpTempBan extends Command {
             s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempban.needtime", "Please add a time to ban %ip% successful.", new String[] {"%ip%"}, new String[] {ip}));
             return;
         }
+        
+        if(PlayerBan.isBanned(ip)) {
+            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempban.is-banned", "IP %ip% is already banned.", new String[] {"%ip%"}, new String[] {ip}));
+            return;
+        }
 
         PlayerBan pb = new PlayerBan(BungeeBans.getTheIP(ip, true), BungeeBans.getTheIP(ip, true), msg, time, "ban");
         MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());

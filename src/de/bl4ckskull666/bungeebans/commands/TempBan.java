@@ -69,6 +69,11 @@ public class TempBan extends Command {
             return;
         }
         
+        if(PlayerBan.isBanned(name) || PlayerBan.isBanned(nick)) {
+            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.tempban.is-banned", "%name% is already banned.", new String[] {"%name%"}, new String[] {nick}));
+            return;
+        }
+        
         PlayerBan pb = new PlayerBan(name, nick, msg, time, "ban");
         MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
         

@@ -43,6 +43,11 @@ public class IpBan extends Command {
             return;
         }
         
+        if(PlayerBan.isBanned(ip)) {
+            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ipban.is-banned", "IP %ip% is already banned.", new String[] {"%ip%"}, new String[] {ip}));
+            return;
+        }
+        
         PlayerBan pb = new PlayerBan(BungeeBans.getTheIP(ip, true), BungeeBans.getTheIP(ip, true), msg, 0L, "ban");
         MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
         

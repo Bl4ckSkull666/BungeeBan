@@ -54,6 +54,11 @@ public class IpTempMute extends Command {
             s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempmute.needtime", "Please add a time to mute %ip% successful.", new String[] {"%ip%"}, new String[] {ip}));
             return;
         }
+        
+        if(PlayerBan.isMuted(ip)) {
+            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempmute.is-muted", "IP %ip% is already muted.", new String[] {"%ip%"}, new String[] {ip}));
+            return;
+        }
 
         PlayerBan pb = new PlayerBan(BungeeBans.getTheIP(ip, true), BungeeBans.getTheIP(ip, true), msg, time, "mute");
         MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
