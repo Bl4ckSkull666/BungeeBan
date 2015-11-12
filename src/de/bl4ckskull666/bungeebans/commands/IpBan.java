@@ -48,8 +48,8 @@ public class IpBan extends Command {
             return;
         }
         
-        PlayerBan pb = new PlayerBan(BungeeBans.getTheIP(ip, true), BungeeBans.getTheIP(ip, true), msg, 0L, "ban");
-        MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
+        PlayerBan pb = new PlayerBan(BungeeBans.getTheIP(ip, true), BungeeBans.getTheIP(ip, true), msg, 0L, "ip");
+        MySQL.addBan(pb, uuid_by_sender.toString());
         
         BungeeBans.KickPlayerByIP(BungeeBans.getTheIP(ip, false), "command.ipban.kick", "Your address was banned by %by% because of %message%.", new String[] {"%message%", "%by%"}, new String[] {msg, s.getName()});
         BungeeBans.TeamInform("command.ipban.message", "%ip% banned by %by% while %message%.", new String[] {"%message%", "%ip%","%by%"}, new String[] {msg, BungeeBans.getTheIP(ip, true), s.getName()});

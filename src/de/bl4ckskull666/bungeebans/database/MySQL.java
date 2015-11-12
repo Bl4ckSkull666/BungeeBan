@@ -108,12 +108,13 @@ public final class MySQL {
     
     public static void loadBans() {
         Connection con;
+        PlayerBan.getBans().clear();
+        PlayerBan.getMutes().clear();
         try {
             con = getConnect();
             PreparedStatement statement;
             ResultSet rs;
-            statement = con.prepareStatement("SELECT `id`,`uuid`,`lastName`,`since`,`ending`,`message`,`btype` FROM `bungeebans` WHERE `id` > ? ORDER BY `since` DESC");
-            statement.setInt(1, _lastLoadedId);
+            statement = con.prepareStatement("SELECT `uuid`,`lastName`,`since`,`ending`,`message`,`btype` FROM `bungeebans` ORDER BY `since` DESC");
             rs = statement.executeQuery();
             while(rs.next()) {
                 Calendar since = Calendar.getInstance();
@@ -122,8 +123,7 @@ public final class MySQL {
                 ending.setTime(rs.getDate("ending"));
 
                 PlayerBan pb = new PlayerBan(rs.getString("uuid"), rs.getString("lastName"), rs.getString("message"), since, ending, rs.getString("btype"));
-                _lastLoadedId = rs.getInt("id");
-            }            
+            }
         } catch(SQLException e) {
             BungeeBans.getPlugin().getLogger().log(Level.WARNING, "Fehler beim Herstellen der Verbindung zum MySQL Server!", e);
         }

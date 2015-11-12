@@ -131,17 +131,17 @@ public class BungeeBans extends Plugin {
         if(ip.length > 1 && !ip[1].equalsIgnoreCase("*") && isNumeric(ip[1]))
             searchIp += ip[1] + ".";
         else if(withZero)
-            searchIp += "0.";
+            searchIp += "*.";
         
         if(ip.length > 2 && !ip[2].equalsIgnoreCase("*") && isNumeric(ip[2]))
             searchIp += ip[2] + ".";
         else if(withZero)
-            searchIp += "0.";
+            searchIp += "*.";
         
         if(ip.length > 3 && !ip[3].equalsIgnoreCase("*") && isNumeric(ip[3]))
             searchIp += ip[3];
         else if(withZero)
-            searchIp += "0";
+            searchIp += "*";
         
         return searchIp;
     }

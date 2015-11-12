@@ -63,7 +63,7 @@ public class Mute extends Command {
         }
         
         PlayerBan pb = new PlayerBan(name, nick, msg, 0L, "mute");
-        MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
+        MySQL.addBan(pb, uuid_by_sender.toString());
         
         if(pp != null)
             pp.sendMessage(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "command.mute.muted", "You're muted by %by% because %message%", new String[] {"%message%", "%by%"}, new String[] {msg, s.getName()}) + Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")));

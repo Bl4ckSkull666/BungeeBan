@@ -75,7 +75,7 @@ public class TempBan extends Command {
         }
         
         PlayerBan pb = new PlayerBan(name, nick, msg, time, "ban");
-        MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
+        MySQL.addBan(pb, uuid_by_sender.toString());
         
         if(pp != null)
             pp.disconnect(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "command.tempban.kick", "You're banned by %by% because of %message% until %date% on %time%.", new String[] {"%message%", "%by%", "%date%", "%time%"}, new String[] {msg, s.getName(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())}) + Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")));

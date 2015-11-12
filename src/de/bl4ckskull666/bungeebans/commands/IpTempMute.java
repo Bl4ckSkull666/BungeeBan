@@ -61,7 +61,7 @@ public class IpTempMute extends Command {
         }
 
         PlayerBan pb = new PlayerBan(BungeeBans.getTheIP(ip, true), BungeeBans.getTheIP(ip, true), msg, time, "mute");
-        MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
+        MySQL.addBan(pb, uuid_by_sender.toString());
         
         BungeeBans.MessagePlayerByIP(BungeeBans.getTheIP(ip, false), "command.iptempmute.muted", "Your address is muted by %by% because of %message% until %date% on %time%.", new String[] {"%message%", "%by%", "%date%", "%time%"}, new String[] {msg, s.getName(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())});
         

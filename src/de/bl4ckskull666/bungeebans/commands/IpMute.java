@@ -49,7 +49,7 @@ public class IpMute extends Command {
         }
         
         PlayerBan pb = new PlayerBan(BungeeBans.getTheIP(ip, true), BungeeBans.getTheIP(ip, true), msg, 0L, "mute");
-        MySQL.addBan(pb, BungeeBans.getPlayer(s.getName()).getUniqueId().toString());
+        MySQL.addBan(pb, uuid_by_sender.toString());
         
         BungeeBans.MessagePlayerByIP(BungeeBans.getTheIP(ip, false), "command.ipmute.muted", "Your address was muted by %by% because of %message%.", new String[] {"%message%", "%by%"}, new String[] {msg, s.getName()});
         BungeeBans.TeamInform("command.ipmute.message", "%ip% muted by %by% while %message%.", new String[] {"%message%", "%ip%", "%by%"}, new String[] {msg, BungeeBans.getTheIP(ip, true), s.getName()});
