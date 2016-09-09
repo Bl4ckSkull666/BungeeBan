@@ -5,10 +5,10 @@
  */
 package de.bl4ckskull666.bungeebans.listener;
 
-import com.google.common.collect.ObjectArrays;
 import de.bl4ckskull666.bungeebans.BungeeBans;
 import de.bl4ckskull666.bungeebans.classes.PlayerBan;
 import de.bl4ckskull666.mu1ti1ingu41.Language;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -48,9 +48,9 @@ public class ChatListener implements Listener {
         }
         
         if(pb.isTemporary())
-           sender.sendMessage(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "function.temp-muted", "You're muted because %message% until %date% on %time%.", new String[] {"%message%", "%date%", "%time%"}, new String[] {pb.getMessage(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())}) + Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "objection", "")));
+           sender.sendMessage(new TextComponent[] {Language.getText(BungeeBans.getPlugin(), sender.getUniqueId(), "function.temp-muted", "You're muted because %message% until %date% on %time%.", new String[] {"%message%", "%date%", "%time%"}, new String[] {pb.getMessage(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())}), Language.getText(BungeeBans.getPlugin(), sender.getUniqueId(), "objection", "")});
         else
-           sender.sendMessage(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "function.muted", "You're muted because %message%.", new String[] {"%message%"}, new String[] {pb.getMessage()}) + Language.getMsg(BungeeBans.getPlugin(), sender.getUniqueId(), "objection", "")));
+           sender.sendMessage(new TextComponent[] {Language.getText(BungeeBans.getPlugin(), sender.getUniqueId(), "function.muted", "You're muted because %message%.", new String[] {"%message%"}, new String[] {pb.getMessage()}), Language.getText(BungeeBans.getPlugin(), sender.getUniqueId(), "objection", "")});
         e.setMessage("");
         e.setCancelled(true);
     }

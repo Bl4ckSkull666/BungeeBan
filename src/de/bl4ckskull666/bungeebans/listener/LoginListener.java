@@ -8,6 +8,7 @@ package de.bl4ckskull666.bungeebans.listener;
 import de.bl4ckskull666.bungeebans.BungeeBans;
 import de.bl4ckskull666.bungeebans.classes.PlayerBan;
 import de.bl4ckskull666.mu1ti1ingu41.Language;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -31,9 +32,9 @@ public class LoginListener implements Listener {
             return;
         
         if(pb.isTemporary())
-           e.setCancelReason(Language.getMsg(BungeeBans.getPlugin(), e.getConnection().getUniqueId(), "function.temp-banned", "You're banned because %message% until %date% on %time%.", new String[] {"%message%", "%date%", "%time%"}, new String[] {pb.getMessage(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())}) + Language.getMsg(BungeeBans.getPlugin(), e.getConnection().getUniqueId(), "objection", ""));
+           e.setCancelReason(Language.getPlainText(BungeeBans.getPlugin(), e.getConnection().getUniqueId(), "function.temp-banned", "You're banned because %message% until %date% on %time%.", new String[] {"%message%", "%date%", "%time%"}, new String[] {pb.getMessage(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())}) + Language.getPlainText(BungeeBans.getPlugin(), e.getConnection().getUniqueId(), "objection", ""));
         else
-           e.setCancelReason(Language.getMsg(BungeeBans.getPlugin(), e.getConnection().getUniqueId(), "function.banned", "You're banned because %message%.", new String[] {"%message%"}, new String[] {pb.getMessage()}) + Language.getMsg(BungeeBans.getPlugin(), e.getConnection().getUniqueId(), "objection", ""));
+           e.setCancelReason(Language.getPlainText(BungeeBans.getPlugin(), e.getConnection().getUniqueId(), "function.banned", "You're banned because %message%.", new String[] {"%message%"}, new String[] {pb.getMessage()}) + Language.getPlainText(BungeeBans.getPlugin(), e.getConnection().getUniqueId(), "objection", ""));
         
         e.setCancelled(true);
     }

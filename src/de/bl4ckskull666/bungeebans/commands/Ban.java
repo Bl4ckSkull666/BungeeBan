@@ -14,6 +14,7 @@ import de.bl4ckskull666.mu1ti1ingu41.Language;
 import java.util.UUID;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -31,7 +32,7 @@ public class Ban extends Command {
     public void execute(CommandSender s, String[] a) {
         UUID uuid_by_sender = BungeeBans.getPlayer(s.getName()) == null?UUID.fromString("00000000-0000-0000-0000-000000000000"):BungeeBans.getPlayer(s.getName()).getUniqueId();
         if(a.length <= 2) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ban.wrongformat", "Please add a Username and a Reason."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ban.wrongformat", "Please add a Username and a Reason.");
             return;
         }
         String name = a[0];
@@ -53,12 +54,12 @@ public class Ban extends Command {
             msg += (msg.isEmpty()?"":" ") + a[i];
         
         if(msg.isEmpty()) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ban.needreason", "Please add a Reason to ban %name% successful.", new String[] {"%name%"}, new String[] {nick}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ban.needreason", "Please add a Reason to ban %name% successful.", new String[] {"%name%"}, new String[] {nick});
             return;
         }
         
         if(PlayerBan.isBanned(name) || PlayerBan.isBanned(nick)) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ban.is-banned", "%name% is already banned.", new String[] {"%name%"}, new String[] {nick}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ban.is-banned", "%name% is already banned.", new String[] {"%name%"}, new String[] {nick});
             return;
         }
         
@@ -66,7 +67,7 @@ public class Ban extends Command {
         MySQL.addBan(pb, uuid_by_sender.toString());
         
         if(pp != null)
-            pp.disconnect(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "command.ban.kick", "You have been just the handcuffs applied by %by% because %message%", new String[] {"%message%", "%by%"}, new String[] {msg, s.getName()}) + Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")));
+            pp.disconnect(new TextComponent[] {Language.getText(BungeeBans.getPlugin(), pp.getUniqueId(), "command.ban.kick", "You have been just the handcuffs applied by %by% because %message%", new String[] {"%message%", "%by%"}, new String[] {msg, s.getName()}), Language.getText(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")});
         BungeeBans.TeamInform("command.ban.message", "Player %name% was banned by %by% while %message%.", new String[] {"%message%", "%name%", "%by%"}, new String[] {msg, nick, s.getName()});
         Tasks.restartBanTask();
     }

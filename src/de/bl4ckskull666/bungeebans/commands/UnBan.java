@@ -28,7 +28,7 @@ public class UnBan extends Command {
     public void execute(CommandSender s, String[] a) {
         UUID uuid_by_sender = BungeeBans.getPlayer(s.getName()) == null?UUID.fromString("00000000-0000-0000-0000-000000000000"):BungeeBans.getPlayer(s.getName()).getUniqueId();
         if(a.length < 1) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.unban.wrongformat", "Please add a Username or IP to unban."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.unban.wrongformat", "Please add a Username or IP to unban.");
             return;
         }
         
@@ -37,7 +37,7 @@ public class UnBan extends Command {
             pb = BungeeBans.getIpBanned(a[0]);
         
         if(pb == null) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.unban.unknown", "Is it really banned? Cant find one."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.unban.unknown", "Is it really banned? Cant find one.");
             return;
         }
         String unbannedName = pb.getName();
@@ -49,6 +49,6 @@ public class UnBan extends Command {
             }
             MySQL.addBan(pb, s.getName());
         }
-        s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.unban.error", "Gets an error on remove ban. Please try again."));
+        Language.sendMessage(BungeeBans.getPlugin(), s, "command.unban.error", "Gets an error on remove ban. Please try again.");
     }
 }

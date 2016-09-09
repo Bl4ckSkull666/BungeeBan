@@ -29,7 +29,7 @@ public class UnMute extends Command {
     public void execute(CommandSender s, String[] a) {
         UUID uuid_by_sender = BungeeBans.getPlayer(s.getName()) == null?UUID.fromString("00000000-0000-0000-0000-000000000000"):BungeeBans.getPlayer(s.getName()).getUniqueId();
         if(a.length < 1) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.unmute.wrongformat", "Please add a Username or IP to unmute."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.unmute.wrongformat", "Please add a Username or IP to unmute.");
             return;
         }
         
@@ -38,7 +38,7 @@ public class UnMute extends Command {
             pb = BungeeBans.getIpMuted(a[0]);
         
         if(pb == null) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.unmute.unknown", "Is it really muted? Cant find one."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.unmute.unknown", "Is it really muted? Cant find one.");
             return;
         }
         
@@ -46,13 +46,13 @@ public class UnMute extends Command {
         if(MySQL.delBan(pb)) {
             if(PlayerBan.getMutes().remove(pb.getUUID(), pb)) {
                 if(ProxyServer.getInstance().getPlayer(pb.getUUID()) != null)
-                    ProxyServer.getInstance().getPlayer(pb.getUUID()).sendMessage(Language.getMessage(BungeeBans.getPlugin(), UUID.fromString(pb.getUUID()), "function.unmute-me", "You can now talk again. Please respect the server rules."));
+                    ProxyServer.getInstance().getPlayer(pb.getUUID()).sendMessage(Language.getText(BungeeBans.getPlugin(), UUID.fromString(pb.getUUID()), "function.unmute-me", "You can now talk again. Please respect the server rules."));
                 BungeeBans.TeamInform("command.unmute.successful", "%by% has unuted %name%.", new String[] {"%name%", "%by%"}, new String[] {unmutedName, s.getName()});        
                 Tasks.restartMuteTask();
                 return;
             }
             MySQL.addBan(pb, s.getName());
         }
-        s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.unmute.error", "Gets an error on remove mute. Please try again."));
+        Language.sendMessage(BungeeBans.getPlugin(), s, "command.unmute.error", "Gets an error on remove mute. Please try again.");
     }
 }

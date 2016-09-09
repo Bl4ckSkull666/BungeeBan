@@ -29,7 +29,7 @@ public class IpBan extends Command {
         UUID uuid_by_sender = BungeeBans.getPlayer(s.getName()) == null?UUID.fromString("00000000-0000-0000-0000-000000000000"):BungeeBans.getPlayer(s.getName()).getUniqueId();
         if(a.length <= 2) {
             //Wrong format
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ipban.wrongformat", "Please add a IP and a Reason."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ipban.wrongformat", "Please add a IP and a Reason.");
             return;
         }
         String ip = a[0];
@@ -39,12 +39,12 @@ public class IpBan extends Command {
             msg += (msg.isEmpty()?"":" ") + a[i];
         
         if(msg.isEmpty()) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ipban.needreason", "Please add a Reason to ban %ip% successful.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ipban.needreason", "Please add a Reason to ban %ip% successful.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
         
         if(PlayerBan.isBanned(ip)) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ipban.is-banned", "IP %ip% is already banned.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ipban.is-banned", "IP %ip% is already banned.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
         

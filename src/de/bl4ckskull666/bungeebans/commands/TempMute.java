@@ -13,6 +13,7 @@ import de.bl4ckskull666.mu1ti1ingu41.Language;
 import java.util.UUID;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -30,7 +31,7 @@ public class TempMute extends Command {
     public void execute(CommandSender s, String[] a) {
         UUID uuid_by_sender = BungeeBans.getPlayer(s.getName()) == null?UUID.fromString("00000000-0000-0000-0000-000000000000"):BungeeBans.getPlayer(s.getName()).getUniqueId();
         if(a.length <= 2) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.tempmute.wrongformat", "Please add a Name,a Reason and a Time."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.tempmute.wrongformat", "Please add a Name,a Reason and a Time.");
             return;
         }
         
@@ -59,17 +60,17 @@ public class TempMute extends Command {
         }
         
         if(msg.isEmpty()) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.tempmute.needreason", "Please add a Reason to ban %name% for a time.", new String[] {"%name%"}, new String[] {nick}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.tempmute.needreason", "Please add a Reason to ban %name% for a time.", new String[] {"%name%"}, new String[] {nick});
             return;
         }
         
         if(time == 0L) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.tempmute.needtime", "Please add a time to ban %name% successful.", new String[] {"%name%"}, new String[] {nick}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.tempmute.needtime", "Please add a time to ban %name% successful.", new String[] {"%name%"}, new String[] {nick});
             return;
         }
         
         if(PlayerBan.isMuted(name) || PlayerBan.isMuted(nick)) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.mute.is-muted", "%name% is already muted.", new String[] {"%name%"}, new String[] {nick}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.mute.is-muted", "%name% is already muted.", new String[] {"%name%"}, new String[] {nick});
             return;
         }
         
@@ -77,7 +78,7 @@ public class TempMute extends Command {
         MySQL.addBan(pb, uuid_by_sender.toString());
         
         if(pp != null)
-            pp.sendMessage(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "command.tempmute.muted", "You're now muted by %by% because of %message% until %date% on %time%.", new String[] {"%message%", "%by%", "%date%", "%time%"}, new String[] {msg, s.getName(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())}) + Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")));
+            pp.sendMessage(new TextComponent[] {Language.getText(BungeeBans.getPlugin(), pp.getUniqueId(), "command.tempmute.muted", "You're now muted by %by% because of %message% until %date% on %time%.", new String[] {"%message%", "%by%", "%date%", "%time%"}, new String[] {msg, s.getName(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())}), Language.getText(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")});
         
         BungeeBans.TeamInform("command.tempmute.message", "%name% was muted by %by% because %message% until %date% on %time%.", new String[] {"%message%", "%name%", "%by%", "%date%", "%time%"}, new String[] {msg, nick, s.getName(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())});
         Tasks.restartMuteTask();

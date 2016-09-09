@@ -29,7 +29,7 @@ public class IpMute extends Command {
         UUID uuid_by_sender = BungeeBans.getPlayer(s.getName()) == null?UUID.fromString("00000000-0000-0000-0000-000000000000"):BungeeBans.getPlayer(s.getName()).getUniqueId();
         if(a.length <= 2) {
             //Wrong format
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ipmute.wrongformat", "Please add a IP and a Reason."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ipmute.wrongformat", "Please add a IP and a Reason.");
             return;
         }
         String ip = a[0];
@@ -39,12 +39,12 @@ public class IpMute extends Command {
             msg += (msg.isEmpty()?"":" ") + a[i];
         
         if(msg.isEmpty()) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ipmute.needreason", "Please add a Reason to mute %ip% successful.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ipmute.needreason", "Please add a Reason to mute %ip% successful.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
         
         if(PlayerBan.isMuted(ip)) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.ipmute.is-muted", "IP %ip% is already muted.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.ipmute.is-muted", "IP %ip% is already muted.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
         

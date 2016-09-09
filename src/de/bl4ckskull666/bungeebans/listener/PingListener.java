@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import net.md_5.bungee.api.Favicon;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.ServerPing.Players;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -45,7 +46,7 @@ public class PingListener implements Listener {
     
     @EventHandler(priority = EventPriority.LOWEST)
     public void onProxyPing(ProxyPingEvent e) {
-        PlayerBan pb = BungeeBans.getIpBanned(e.getConnection().getAddress().getAddress().getHostAddress());
+        /*PlayerBan pb = BungeeBans.getIpBanned(e.getConnection().getAddress().getAddress().getHostAddress());
         if(e.getConnection().getUniqueId() != null)
             BungeeBans.getPlugin().getLogger().log(Level.INFO, "UUID in ProxyPing is not null");
         if(e.getConnection().getName() != null)
@@ -55,12 +56,12 @@ public class PingListener implements Listener {
             return;
         
         String lang = Language.getLanguageByAddress(e.getConnection().getAddress().getAddress());
-        String message;
+        TextComponent message;
         
-        if(pb.isTemporary())
-            message = Language.getMsg(BungeeBans.getPlugin(), lang, "function.ping.temp-banned", "You're address banned because of %message% until %date% on %time%.", new String[] {"%message%", "%date%", "%time%"}, new String[] {pb.getMessage(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())});
+        /if(pb.isTemporary())
+            message = Language.getText(BungeeBans.getPlugin(), , "function.ping.temp-banned", "You're address banned because of %message% until %date% on %time%.", new String[] {"%message%", "%date%", "%time%"}, new String[] {pb.getMessage(), BungeeBans.getDateByCalendar(pb.getEnding()), BungeeBans.getTimeByCalendar(pb.getEnding())});
         else
-            message = Language.getMsg(BungeeBans.getPlugin(), lang, "function.ping.banned", "You're address is banned because of %message%.", new String[] {"%message%"}, new String[] {pb.getMessage()});
+            message = Language.getText(BungeeBans.getPlugin(), lang, "function.ping.banned", "You're address is banned because of %message%.", new String[] {"%message%"}, new String[] {pb.getMessage()});
         
         Players ps = e.getResponse().getPlayers();
         ps.setMax(0);
@@ -72,6 +73,6 @@ public class PingListener implements Listener {
                 message,
                 _favi
             )
-        );
+        );*/
     }
 }

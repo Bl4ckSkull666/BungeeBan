@@ -29,7 +29,7 @@ public class IpTempBan extends Command {
         UUID uuid_by_sender = BungeeBans.getPlayer(s.getName()) == null?UUID.fromString("00000000-0000-0000-0000-000000000000"):BungeeBans.getPlayer(s.getName()).getUniqueId();
         if(a.length <= 2) {
             //Wrong format
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempban.wrongformat", "Please add a IP,a Reason and a Time."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.iptempban.wrongformat", "Please add a IP,a Reason and a Time.");
             return;
         }
         String ip = a[0];
@@ -46,17 +46,17 @@ public class IpTempBan extends Command {
         }
         
         if(msg.isEmpty()) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempban.needreason", "Please add a Reason to ban %ip% for a time.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.iptempban.needreason", "Please add a Reason to ban %ip% for a time.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
         
         if(time == 0L) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempban.needtime", "Please add a time to ban %ip% successful.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.iptempban.needtime", "Please add a time to ban %ip% successful.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
         
         if(PlayerBan.isBanned(ip)) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempban.is-banned", "IP %ip% is already banned.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.iptempban.is-banned", "IP %ip% is already banned.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
 

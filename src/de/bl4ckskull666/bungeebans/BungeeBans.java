@@ -28,10 +28,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
-import yamlapi.file.FileConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  *
@@ -148,15 +149,21 @@ public class BungeeBans extends Plugin {
     
     public static void KickPlayerByIP(String ipAddress, String path, String def, String[] search, String[] replace) {
         for(ProxiedPlayer pp: ProxyServer.getInstance().getPlayers()) {
-            if(pp.getPendingConnection().getAddress().getAddress().getHostAddress().startsWith(ipAddress))
-                pp.disconnect(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), path, def, search, replace) + Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")));
+            if(pp.getPendingConnection().getAddress().getAddress().getHostAddress().startsWith(ipAddress)) {
+                TextComponent tc = Language.getText(BungeeBans.getPlugin(), pp.getUniqueId(), path, def, search, replace);
+                tc.addExtra(Language.getText(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", ""));
+                pp.disconnect(tc);
+        
+            }
         }
     }
     
     public static void MessagePlayerByIP(String ipAddress, String path, String def, String[] search, String[] replace) {
         for(ProxiedPlayer pp: ProxyServer.getInstance().getPlayers()) {
             if(pp.getPendingConnection().getAddress().getAddress().getHostAddress().startsWith(ipAddress)) {
-                pp.sendMessage(Language.convertString(Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), path, def, search, replace) + Language.getMsg(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", "")));
+                TextComponent tc = Language.getText(BungeeBans.getPlugin(), pp.getUniqueId(), path, def, search, replace);
+                tc.addExtra(Language.getText(BungeeBans.getPlugin(), pp.getUniqueId(), "objection", ""));
+                pp.sendMessage(tc);
             }
         }
     }
@@ -164,7 +171,7 @@ public class BungeeBans extends Plugin {
     public static void TeamInform(String path, String def, String[] search, String[] replace) {
         for(ProxiedPlayer pp: ProxyServer.getInstance().getPlayers()) {
             if(pp.hasPermission("bungeebans.team"))
-                pp.sendMessage(Language.getMessage(BungeeBans.getPlugin(), pp.getUniqueId(), path, def, search, replace));
+                Language.sendMessage(BungeeBans.getPlugin(), pp, path, def, search, replace);
         }
     }
     

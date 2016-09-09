@@ -29,7 +29,7 @@ public class IpTempMute extends Command {
         UUID uuid_by_sender = BungeeBans.getPlayer(s.getName()) == null?UUID.fromString("00000000-0000-0000-0000-000000000000"):BungeeBans.getPlayer(s.getName()).getUniqueId();
         if(a.length <= 2) {
             //Wrong format
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempmute.wrongformat", "Please add a IP,a Reason and a Time."));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.iptempmute.wrongformat", "Please add a IP,a Reason and a Time.");
             return;
         }
         String ip = a[0];
@@ -46,17 +46,17 @@ public class IpTempMute extends Command {
         }
         
         if(msg.isEmpty()) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempmute.needreason", "Please add a Reason to mute %ip% for a time.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.iptempmute.needreason", "Please add a Reason to mute %ip% for a time.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
         
         if(time == 0L) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempmute.needtime", "Please add a time to mute %ip% successful.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.iptempmute.needtime", "Please add a time to mute %ip% successful.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
         
         if(PlayerBan.isMuted(ip)) {
-            s.sendMessage(Language.getMessage(BungeeBans.getPlugin(), uuid_by_sender, "command.iptempmute.is-muted", "IP %ip% is already muted.", new String[] {"%ip%"}, new String[] {ip}));
+            Language.sendMessage(BungeeBans.getPlugin(), s, "command.iptempmute.is-muted", "IP %ip% is already muted.", new String[] {"%ip%"}, new String[] {ip});
             return;
         }
 

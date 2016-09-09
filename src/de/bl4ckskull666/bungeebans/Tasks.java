@@ -97,7 +97,7 @@ public final class Tasks {
                     BungeeBans.getPlugin().getLogger().log(Level.INFO, "{0} was unmuted.", _unmuteStr);
                     BungeeBans.TeamInform("function.auto-unmute", "%name%'s mute time has end.", new String[] {"%name%"}, new String[] {name});
                     if(ProxyServer.getInstance().getPlayer(_unmute.getUUID()) != null)
-                        ProxyServer.getInstance().getPlayer(_unmute.getUUID()).sendMessage(Language.getMessage(BungeeBans.getPlugin(), UUID.fromString(_unmute.getUUID()), "function.auto-unmute-me", "Your mute time has end. You can now talk again."));
+                        Language.sendMessage(BungeeBans.getPlugin(), ProxyServer.getInstance().getPlayer(_unmute.getUUID()), "function.auto-unmute-me", "Your mute time has end. You can now talk again.");
                 }
             }
 
